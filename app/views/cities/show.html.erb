@@ -1,0 +1,31 @@
+<div class="container">
+  <h1 class="mb-4"><%= @city.name %></h1>
+  <p class="lead">Code postal : <%= @city.zip_code %></p>
+  
+  <h2 class="mt-4 mb-3">Potins de cette ville</h2>
+  
+  <% if @gossips.any? %>
+    <div class="row">
+      <% @gossips.each do |gossip| %>
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%= gossip.title %></h5>
+              <h6 class="card-subtitle mb-2 text-muted">Par <%= gossip.user.first_name %></h6>
+              <p class="card-text">
+                <small class="text-muted">
+                  <%= pluralize(gossip.comments.count, 'commentaire') %>
+                </small>
+              </p>
+              <%= link_to "Voir plus", gossip_path(gossip), class: "btn btn-primary" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-muted">Aucun potin n'a été publié par les habitants de cette ville.</p>
+  <% end %>
+  
+  <%= link_to "Retour", :back, class: "btn btn-secondary mt-3" %>
+</div>

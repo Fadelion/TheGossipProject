@@ -9,9 +9,14 @@ Rails.application.routes.draw do
   # Route pour la page de bienvenue personnalisée
   get '/welcome/:first_name', to: 'welcome#show'
   
-  # Routes pour les potins
-  resources :gossips
+  # Routes pour les potins et leurs commentaires
+  resources :gossips do
+    resources :comments
+  end
   
   # Routes pour les utilisateurs
   resources :users, only: [:show]
+  
+  # Routes pour les villes
+  resources :cities, only: [:show]
 end

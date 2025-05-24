@@ -8,9 +8,68 @@
       <p class="card-text">
         <small class="text-muted">
           Écrit par <%= link_to @gossip.user.first_name, user_path(@gossip.user) %> 
+          de <%= link_to @gossip.user.city.name, city_path(@gossip.user.city) %>
           le <%= @gossip.created_at.strftime("%d/%m/%Y à %H:%M") %>
         </small>
       </p>
+      
+      <% if @gossip.tags.any? %>
+        <div class="mt-3">
+          <strong>Tags:</strong>
+          <% @gossip.tags.each do |tag| %>
+            <span class="badge bg-info text-dark me-1"><%= tag.title %></span>
+          <% end %>
+        </div>
+      <% end %>
+      
+      <div class="mt-3">
+        <%= link_to "Modifier", edit_gossip_path(@gossip), class: "btn btn-warning" %>
+        <%= link_to "Supprimer", gossip_path(@gossip), 
+            data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir supprimer ce potin ?" }, 
+            class: "btn btn-danger" %>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Section commentaires -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h3>Commentaires (<%= @comments.count %>)</h3>
+    </div>
+    <div class="card-body">
+      <!-- Formulaire de nouveau commentaire -->
+      <div class="mb-4">
+        <h4>Ajouter un commentaire</h4>
+        <%= form_tag gossip_comments_path(@gossip), method: "post" do %>
+          <div class="mb-3">
+            <%= text_area_tag 'comment[content]', nil, class: 'form-control', rows: 3, placeholder: 'Votre commentaire...' %>
+          </div>
+          <%= submit_tag "Commenter", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+      
+      <!-- Liste des commentaires -->
+      <% if @comments.any? %>
+        <div class="list-group">
+          <% @comments.each do |comment| %>
+            <div class="list-group-item">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1"><%= comment.user.first_name %></h5>
+                <small><%= comment.created_at.strftime("%d/%m/%Y à %H:%M") %></small>
+              </div>
+              <p class="mb-1"><%= comment.content %></p>
+              <div class="mt-2">
+                <%= link_to "Modifier", edit_gossip_comment_path(@gossip, comment), class: "btn btn-sm btn-outline-secondary" %>
+                <%= link_to "Supprimer", gossip_comment_path(@gossip, comment), 
+                    data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir supprimer ce commentaire ?" }, 
+                    class: "btn btn-sm btn-outline-danger" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-muted">Aucun commentaire pour le moment.</p>
+      <% end %>
     </div>
   </div>
   

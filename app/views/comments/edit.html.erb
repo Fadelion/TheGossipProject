@@ -1,0 +1,18 @@
+<div class="container">
+  <h1>Modifier le commentaire</h1>
+  
+  <%= form_tag gossip_comment_path(@gossip, @comment), method: "patch" do %>
+    <div class="mb-3">
+      <%= label_tag 'comment[content]', 'Contenu', class: 'form-label' %>
+      <%= text_area_tag 'comment[content]', @comment.content, class: 'form-control', rows: 3 %>
+    </div>
+    
+    <div class="mb-3">
+      <%= submit_tag "Mettre à jour", class: "btn btn-primary" %>
+      <%= link_to "Annuler", gossip_path(@gossip), class: "btn btn-secondary" %>
+      <%= link_to "Supprimer", gossip_comment_path(@gossip, @comment), 
+          data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir supprimer ce commentaire ?" }, 
+          class: "btn btn-danger" %>
+    </div>
+  <% end %>
+</div>

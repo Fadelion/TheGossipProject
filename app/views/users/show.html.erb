@@ -7,7 +7,7 @@
       <h5 class="card-title">Informations</h5>
       <p class="card-text">Âge : <%= @user.age %> ans</p>
       <p class="card-text">Email : <%= @user.email %></p>
-      <p class="card-text">Ville : <%= @user.city.name %></p>
+      <p class="card-text">Ville : <%= link_to @user.city.name, city_path(@user.city) %></p>
       <p class="card-text">Description : <%= @user.description %></p>
     </div>
   </div>

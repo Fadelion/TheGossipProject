@@ -1,0 +1,27 @@
+<div class="container">
+  <h1>Créer un nouveau potin</h1>
+  
+  <%= form_tag gossips_path, method: "post" do %>
+    <div class="mb-3">
+      <%= label_tag 'gossip[title]', 'Titre', class: 'form-label' %>
+      <%= text_field_tag 'gossip[title]', nil, class: 'form-control', placeholder: 'Titre du potin (3-14 caractères)' %>
+    </div>
+    
+    <div class="mb-3">
+      <%= label_tag 'gossip[content]', 'Contenu', class: 'form-label' %>
+      <%= text_area_tag 'gossip[content]', nil, class: 'form-control', rows: 5, placeholder: 'Contenu du potin' %>
+    </div>
+    
+    <div class="mb-3">
+      <%= label_tag 'gossip[tag_ids][]', 'Tags', class: 'form-label' %>
+      <%= select_tag 'gossip[tag_ids][]', options_from_collection_for_select(@tags, 'id', 'title'), 
+          class: 'form-select', multiple: true, include_blank: false %>
+      <div class="form-text">Maintenez Ctrl (ou Cmd) pour sélectionner plusieurs tags</div>
+    </div>
+    
+    <div class="mb-3">
+      <%= submit_tag "Créer le potin", class: "btn btn-primary" %>
+      <%= link_to "Retour", root_path, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+</div>

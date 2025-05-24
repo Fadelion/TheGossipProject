@@ -1,6 +1,10 @@
 <div class="container">
   <h1 class="mb-4">Bienvenue sur The Gossip Project !</h1>
   
+  <div class="mb-4">
+    <%= link_to "Créer un nouveau potin", new_gossip_path, class: "btn btn-success" %>
+  </div>
+  
   <div class="row">
     <% @gossips.each do |gossip| %>
       <div class="col-md-4 mb-4">
@@ -8,6 +12,11 @@
           <div class="card-body">
             <h5 class="card-title"><%= gossip.title %></h5>
             <h6 class="card-subtitle mb-2 text-muted">Par <%= gossip.user.first_name %></h6>
+            <p class="card-text">
+              <small class="text-muted">
+                <%= pluralize(gossip.comments.count, 'commentaire') %>
+              </small>
+            </p>
             <%= link_to "Voir plus", gossip_path(gossip), class: "btn btn-primary" %>
           </div>
         </div>

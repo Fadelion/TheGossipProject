@@ -5,4 +5,8 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :sent_private_messages, class_name: "PrivateMessage", foreign_key: "sender_id", dependent: :destroy
   has_and_belongs_to_many :received_private_messages, class_name: "PrivateMessage", join_table: "private_messages_users"
+  
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 end
