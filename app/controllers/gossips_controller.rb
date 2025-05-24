@@ -1,10 +1,13 @@
 class GossipsController < ApplicationController
+  before_action :authenticate_user, except: [:index]
+  before_action :set_gossip, only: [:show, :edit, :update, :destroy]
+  before_action :authorize_user, only: [:edit, :update, :destroy]
+  
   def index
     @gossips = Gossip.all
   end
 
   def show
-    @gossip = Gossip.find(params[:id])
     @comment = Comment.new
     @comments = @gossip.comments
   end
@@ -15,9 +18,7 @@ class GossipsController < ApplicationController
   end
   
   def create
-    @anonymous_user = User.find_by(first_name: "Anonymous") || User.first
-    @gossip = Gossip.new(gossip_params)
-    @gossip.user = @anonymous_user
+    @gossip = current_user.gossips.build(gossip_params)
     
     if @gossip.save
       flash[:success] = "Le potin a été sauvegardé avec succès !"
@@ -30,13 +31,10 @@ class GossipsController < ApplicationController
   end
   
   def edit
-    @gossip = Gossip.find(params[:id])
     @tags = Tag.all
   end
   
   def update
-    @gossip = Gossip.find(params[:id])
-    
     if @gossip.update(gossip_params)
       flash[:success] = "Le potin a été mis à jour avec succès !"
       redirect_to gossip_path(@gossip)
@@ -48,14 +46,23 @@ class GossipsController < ApplicationController
   end
   
   def destroy
-    @gossip = Gossip.find(params[:id])
     @gossip.destroy
-    
     flash[:success] = "Le potin a été supprimé avec succès !"
     redirect_to root_path
   end
   
   private
+  
+  def set_gossip
+    @gossip = Gossip.find(params[:id])
+  end
+  
+  def authorize_user
+    unless @gossip.user == current_user
+      flash[:danger] = "Vous n'êtes pas autorisé à effectuer cette action"
+      redirect_to gossip_path(@gossip)
+    end
+  end
   
   def gossip_params
     params.require(:gossip).permit(:title, :content, tag_ids: [])

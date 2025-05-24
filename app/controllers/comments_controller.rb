@@ -1,11 +1,12 @@
 class CommentsController < ApplicationController
+  before_action :authenticate_user
   before_action :set_gossip
   before_action :set_comment, only: [:edit, :update, :destroy]
+  before_action :authorize_user, only: [:edit, :update, :destroy]
   
   def create
-    @anonymous_user = User.find_by(first_name: "Anonymous") || User.first
     @comment = @gossip.comments.new(comment_params)
-    @comment.user = @anonymous_user
+    @comment.user = current_user
     
     if @comment.save
       flash[:success] = "Commentaire ajouté avec succès !"
@@ -43,6 +44,13 @@ class CommentsController < ApplicationController
   
   def set_comment
     @comment = @gossip.comments.find(params[:id])
+  end
+  
+  def authorize_user
+    unless @comment.user == current_user
+      flash[:danger] = "Vous n'êtes pas autorisé à effectuer cette action"
+      redirect_to gossip_path(@gossip)
+    end
   end
   
   def comment_params

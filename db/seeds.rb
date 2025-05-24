@@ -22,19 +22,11 @@ end
     description: Faker::Lorem.paragraph(sentence_count: 2),
     email: Faker::Internet.email,
     age: rand(18..80),
-    city: City.all.sample
+    city: City.all.sample,
+    password: "password",
+    password_confirmation: "password"
   )
 end
-
-# Création d'un utilisateur anonyme pour les potins créés via le formulaire
-User.create!(
-  first_name: "Anonymous",
-  last_name: "User",
-  description: "Utilisateur anonyme pour les potins créés via le formulaire",
-  email: "anonymous@gossip-project.com",
-  age: 99,
-  city: City.all.sample
-)
 
 # Création des tags
 tags = [
@@ -51,7 +43,7 @@ end
   gossip = Gossip.create!(
     title: Faker::Lorem.sentence(word_count: 3, random_words_to_add: 0).truncate(14),
     content: Faker::Lorem.paragraph(sentence_count: 3),
-    user: User.where.not(first_name: "Anonymous").sample
+    user: User.all.sample
   )
   
   # Association de tags aléatoires à chaque potin
