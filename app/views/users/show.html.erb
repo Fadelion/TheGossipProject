@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="card mb-4">
+    <div class="card-header">
+      <h2>Profil de <%= @user.first_name %> <%= @user.last_name %></h2>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Informations</h5>
+      <p class="card-text">Âge : <%= @user.age %> ans</p>
+      <p class="card-text">Email : <%= @user.email %></p>
+      <p class="card-text">Ville : <%= @user.city.name %></p>
+      <p class="card-text">Description : <%= @user.description %></p>
+    </div>
+  </div>
+  
+  <h3 class="mb-3">Ses potins</h3>
+  <div class="row">
+    <% @user.gossips.each do |gossip| %>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"><%= gossip.title %></h5>
+            <%= link_to "Voir plus", gossip_path(gossip), class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  
+  <%= link_to "Retour", root_path, class: "btn btn-secondary" %>
+</div>

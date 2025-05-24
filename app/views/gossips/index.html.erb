@@ -1,0 +1,17 @@
+<div class="container">
+  <h1 class="mb-4">Bienvenue sur The Gossip Project !</h1>
+  
+  <div class="row">
+    <% @gossips.each do |gossip| %>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"><%= gossip.title %></h5>
+            <h6 class="card-subtitle mb-2 text-muted">Par <%= gossip.user.first_name %></h6>
+            <%= link_to "Voir plus", gossip_path(gossip), class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
